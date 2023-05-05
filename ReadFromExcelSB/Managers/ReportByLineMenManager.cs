@@ -5,37 +5,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using ReadFromExcelSB.Helpers;
+using System.Globalization;
 
 namespace ReadFromExcelSB.Managers
 {
     internal class ReportByLineMenManager
     {
-        public List<LineMenReport> GetReport(List<DcDto> dcList)
+        public string GetReport(List<DcDto> dcList)
         {
+            string reportHtml = Utilities.ReadResourceContent("ReportByLineMen");
+            string rowValue = Utilities.ReadResourceContent("ReportByLineMenRow");
+            string rowData = string.Empty;
             var groupByList = dcList.GroupBy(g => g.LineMenName);
-            var reportData = new List<LineMenReport>();
             foreach (var groupBy in groupByList)
             {
-                reportData.Add(new LineMenReport()
-                {
-                    LineMenName = groupBy.Key,
-                    TotalAmount = groupBy.Sum(lm => lm.ServiceAmount),
-                    NumberOfServices = groupBy.Count()
-                });
+                rowData =$"{rowData}{string.Format(rowValue, groupBy.Key, groupBy.Count(), groupBy.Sum(lm => lm.ServiceAmount).ToString("#,#.##", CultureInfo.CreateSpecificCulture("hi-IN")))}" ;
             }
 
-            return reportData;
+            return string.Format( reportHtml, rowData);
 
         }
 
     }
 
-    public class LineMenReport
-    {
-        public string? LineMenName { get; set; }
+    //public class LineMenReport
+    //{
+    //    public string? LineMenName { get; set; }
 
-        public double TotalAmount { set; get; }
+    //    public double TotalAmount { set; get; }
 
-        public int NumberOfServices { get; set; }
-    }
+    //    public int NumberOfServices { get; set; }
+    //}
 }

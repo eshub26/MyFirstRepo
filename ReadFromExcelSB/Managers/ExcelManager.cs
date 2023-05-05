@@ -16,7 +16,7 @@ namespace ReadFromExcelSB.Managers
 
         List<DcDto> dcList = new List<DcDto>();
 
-        public List<LineMenReport> ProcessData(string filePath)
+        public string ProcessData(string filePath)
         {
             using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
             {
