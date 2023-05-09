@@ -16,26 +16,32 @@ namespace ReadFromExcelSB.Managers
     public class OpenxmlFacade
     {
 
+        private readonly Action<SheetData> _updateData;
+        private readonly List<string> _columns;
+
+
+        public OpenxmlFacade(Action<SheetData> updateData, List<string> columns)
+        {
+            _updateData = updateData;
+            _columns = columns;
+        }
+
+  
+
         /// <summary>
         /// Then, add the below code for creating an Excel file into given path.
         /// </summary>
         /// <param name="data"></param>
         /// <param name="OutPutFileDirectory"></param>
-        public void CreateExcelFile(TestModelList data, string OutPutFileDirectory)
+        public string CreateExcelFile(string OutPutFileDirectory)
         {
-            var datetime = DateTime.Now.ToString().Replace("/", "_").Replace(":", "_");
-
             string fileFullname = Path.Combine(OutPutFileDirectory, $"Output{DateTime.Now.ToString("hhmmss")}.xlsx");
-
-            if (File.Exists(fileFullname))
-            {
-                fileFullname = Path.Combine(OutPutFileDirectory, "Output_" + datetime + ".xlsx");
-            }
 
             using (SpreadsheetDocument package = SpreadsheetDocument.Create(fileFullname, SpreadsheetDocumentType.Workbook))
             {
-                CreatePartsForExcel(package, data);
+                CreatePartsForExcel(package);
             }
+            return fileFullname;
         }
 
         /// <summary>
@@ -43,9 +49,9 @@ namespace ReadFromExcelSB.Managers
         /// </summary>
         /// <param name="document"></param>
         /// <param name="data"></param>
-        private void CreatePartsForExcel(SpreadsheetDocument document, TestModelList data)
+        private void CreatePartsForExcel(SpreadsheetDocument document)
         {
-            SheetData partSheetData = GenerateSheetdataForDetails(data);
+            SheetData partSheetData = GenerateSheetdataForDetails();
 
             WorkbookPart workbookPart1 = document.AddWorkbookPart();
             GenerateWorkbookPartContent(workbookPart1);
@@ -266,18 +272,14 @@ namespace ReadFromExcelSB.Managers
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        private SheetData GenerateSheetdataForDetails(TestModelList data)
+        private SheetData GenerateSheetdataForDetails()
         {
             SheetData sheetData1 = new SheetData();
             sheetData1.Append(CreateHeaderRowForExcel());
-
-            foreach (TestModel testmodel in data.testData)
-            {
-                Row partsRows = GenerateRowForChildPartDetail(testmodel);
-                sheetData1.Append(partsRows);
-            }
+            _updateData(sheetData1);
             return sheetData1;
         }
+
 
         /// <summary>
         /// The below function is created for creating Header rows in Excel.
@@ -286,35 +288,20 @@ namespace ReadFromExcelSB.Managers
         private Row CreateHeaderRowForExcel()
         {
             Row workRow = new Row();
-            workRow.Append(CreateCell("Test Id", 2U));
-            workRow.Append(CreateCell("Test Name", 2U));
-            workRow.Append(CreateCell("Test Description", 2U));
-            workRow.Append(CreateCell("Test Date", 2U));
+            foreach (var column in _columns)
+            {
+                workRow.Append(CreateCell(column, 2U));
+            }
             return workRow;
         }
 
-        /// <summary>
-        /// Below function is used for generating child rows.
-        /// </summary>
-        /// <param name="testmodel"></param>
-        /// <returns></returns>
-        private Row GenerateRowForChildPartDetail(TestModel testmodel)
-        {
-            Row tRow = new Row();
-            tRow.Append(CreateCell(testmodel.TestId.ToString()));
-            tRow.Append(CreateCell(testmodel.TestName));
-            tRow.Append(CreateCell(testmodel.TestDesc));
-            tRow.Append(CreateCell(testmodel.TestDate.ToShortDateString()));
-
-            return tRow;
-        }
 
         /// <summary>
         /// Below function is used for creating cell by passing only cell data and it adds default style
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        private Cell CreateCell(string text)
+        public Cell CreateCell(string text)
         {
             Cell cell = new Cell();
             cell.StyleIndex = 1U;
@@ -330,7 +317,7 @@ namespace ReadFromExcelSB.Managers
         /// <param name="text"></param>
         /// <param name="styleIndex"></param>
         /// <returns></returns>
-        private Cell CreateCell(string text, uint styleIndex)
+        public Cell CreateCell(string text, uint styleIndex)
         {
             Cell cell = new Cell();
             cell.StyleIndex = styleIndex;
@@ -362,16 +349,4 @@ namespace ReadFromExcelSB.Managers
 
     }
 
-    public class TestModel
-    {
-        public int TestId { get; set; }
-        public string TestName { get; set; }
-        public string TestDesc { get; set; }
-        public DateTime TestDate { get; set; }
-    }
-
-    public class TestModelList
-    {
-        public List<TestModel> testData { get; set; }
-    }
 }

@@ -27,7 +27,7 @@ namespace ReadFromExcelSB
         {
            // AddHtmlPanel();
 
-            LogData(Utilities.ReadResourceContent("ReportByLineMen"));
+            //LogData(Utilities.ReadResourceContent("ReportByLineMen"));
 
         }
 
@@ -54,9 +54,9 @@ namespace ReadFromExcelSB
 
                 if (filePath == null) throw new ArgumentNullException("File Path Not found");
 
-                var excelManager = new ExcelManager();
-
-                reportPanel.Text = excelManager.ProcessData(filePath);
+                var openXmlFacade = new ReportByLineMenManager();
+                string outputHtml = openXmlFacade.GetReport(filePath);
+                reportPanel.Text = outputHtml;
 
             }
             catch (Exception ex)
@@ -65,46 +65,21 @@ namespace ReadFromExcelSB
             }
         }
 
-        private void CreateExcel_Click(object sender, EventArgs e)
+        private void LenMenReportExcel_Click(object sender, EventArgs e)
         {
-            var openXmlFacade = new OpenxmlFacade();
-            var inputData = new TestModelList()
+            try
             {
-                testData = new List<TestModel>()
-                {
-                    new TestModel()
-                    {
-                        TestDate = DateTime.Now,
-                        TestDesc = " My desc",
-                        TestId = 11,
-                        TestName = "Test 2"
-                    },
-                    new TestModel()
-                    {
-                        TestDate = DateTime.Now,
-                        TestDesc = " My desc 2",
-                        TestId = 12,
-                        TestName = "Test 3"
-                    },
-                    new TestModel()
-                    {
-                        TestDate = DateTime.Now,
-                        TestDesc = " My desc 4",
-                        TestId = 14,
-                        TestName = "Test 4"
-                    },
-                    new TestModel()
-                    {
-                        TestDate = DateTime.Now,
-                        TestDesc = " My desc 5",
-                        TestId = 15,
-                        TestName = "Test 5"
-                    }
-                }
-            };
-
-
-            openXmlFacade.CreateExcelFile(inputData, @"C:\source\Eswar\temp");
+                var openXmlFacade = new ReportByLineMenManager();
+                var filePath = ConfigurationManager.AppSettings["ExcelFilePath"];
+                string output = openXmlFacade.DownloadExcel(filePath);
+                lblMessage.Text = $"Excel report created in in {output}";
+            }
+            catch(Exception ex)
+            {
+                lblMessage.Text = ex.Message;
+                LogData(ex.ToString());
+            }
+            
 
         }
     }
