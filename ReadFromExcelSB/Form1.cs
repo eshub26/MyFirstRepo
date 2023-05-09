@@ -35,7 +35,7 @@ namespace ReadFromExcelSB
         {
             HtmlPanel _htmlLabel = new HtmlPanel();
 
-            _htmlLabel.Text = SampleHtmlPanelText;
+           // _htmlLabel.Text = SampleHtmlPanelText;
             _htmlLabel.Top = 100;
             _htmlLabel.Left = 100;
             _htmlLabel.Height = 200;
@@ -43,39 +43,7 @@ namespace ReadFromExcelSB
             this.Controls.Add(_htmlLabel);
         }
 
-        public static String SampleHtmlPanelText
-        {
-            get
-            {
-                return "This is an <b>HtmlPanel</b> with <span style=\"color: red\">colors</span> and links: <a href=\"http://htmlrenderer.codeplex.com/\">HTML Renderer</a>" +
-                       "<div style=\"font-size: 1.2em; padding-top: 10px;\" >If there is more text than the size of the control scrollbars will appear.</div>" +
-                       "<br/>Click me to change my <code>Text</code> property.";
-            }
-        }
-
-        public static string GetStylesheet(string src)
-        {
-            if (src == "StyleSheet")
-            {
-                return @"h1, h2, h3 { color: navy; font-weight:normal; }
-                    h1 { margin-bottom: .47em }
-                    h2 { margin-bottom: .3em }
-                    h3 { margin-bottom: .4em }
-                    ul { margin-top: .5em }
-                    ul li {margin: .25em}
-                    body { font:10pt Tahoma }
-		            pre  { border:solid 1px gray; background-color:#eee; padding:1em }
-                    a:link { text-decoration: none; }
-                    a:hover { text-decoration: underline; }
-                    .gray    { color:gray; }
-                    .example { background-color:#efefef; corner-radius:5px; padding:0.5em; }
-                    .whitehole { background-color:white; corner-radius:10px; padding:15px; }
-                    .caption { font-size: 1.1em }
-                    .comment { color: green; margin-bottom: 5px; margin-left: 3px; }
-                    .comment2 { color: green; }";
-            }
-            return null;
-        }
+      
 
         private void btnSubmit_Click_1(object sender, EventArgs e)
         {
@@ -88,15 +56,56 @@ namespace ReadFromExcelSB
 
                 var excelManager = new ExcelManager();
 
-                //dataGridView1.DataSource = excelManager.ProcessData(filePath);
-
-                reportPanel.Text = excelManager.ProcessData(filePath);// Utilities.ReadResourceContent("ReportByLineMen");
+                reportPanel.Text = excelManager.ProcessData(filePath);
 
             }
             catch (Exception ex)
             {
                 LogData(ex.ToString());
             }
+        }
+
+        private void CreateExcel_Click(object sender, EventArgs e)
+        {
+            var openXmlFacade = new OpenxmlFacade();
+            var inputData = new TestModelList()
+            {
+                testData = new List<TestModel>()
+                {
+                    new TestModel()
+                    {
+                        TestDate = DateTime.Now,
+                        TestDesc = " My desc",
+                        TestId = 11,
+                        TestName = "Test 2"
+                    },
+                    new TestModel()
+                    {
+                        TestDate = DateTime.Now,
+                        TestDesc = " My desc 2",
+                        TestId = 12,
+                        TestName = "Test 3"
+                    },
+                    new TestModel()
+                    {
+                        TestDate = DateTime.Now,
+                        TestDesc = " My desc 4",
+                        TestId = 14,
+                        TestName = "Test 4"
+                    },
+                    new TestModel()
+                    {
+                        TestDate = DateTime.Now,
+                        TestDesc = " My desc 5",
+                        TestId = 15,
+                        TestName = "Test 5"
+                    }
+                }
+            };
+
+
+            openXmlFacade.CreateExcelFile(inputData, @"C:\source\Eswar\temp");
+
         }
     }
 }

@@ -22,19 +22,9 @@ namespace ReadFromExcelSB.Managers
             {
                 rowData =$"{rowData}{string.Format(rowValue, groupBy.Key, groupBy.Count(), groupBy.Sum(lm => lm.ServiceAmount).ToString("#,#.##", CultureInfo.CreateSpecificCulture("hi-IN")))}" ;
             }
-
             return string.Format( reportHtml, rowData);
-
         }
 
     }
 
-    //public class LineMenReport
-    //{
-    //    public string? LineMenName { get; set; }
-
-    //    public double TotalAmount { set; get; }
-
-    //    public int NumberOfServices { get; set; }
-    //}
 }

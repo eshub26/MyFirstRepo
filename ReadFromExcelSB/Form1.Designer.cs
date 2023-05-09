@@ -37,6 +37,7 @@
             this.btnLineMenReport = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.logTextBox = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -62,6 +63,7 @@
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.reportPanel);
+            this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.btnLineMenReport);
             this.tabPage1.Location = new System.Drawing.Point(4, 37);
             this.tabPage1.Name = "tabPage1";
@@ -118,6 +120,19 @@
             this.logTextBox.TabIndex = 2;
             this.logTextBox.Text = "Log Data";
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.LightCoral;
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button1.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.button1.Location = new System.Drawing.Point(250, 18);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(198, 46);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Line Men Report";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.CreateExcel_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -144,5 +159,6 @@
         private TabPage tabPage2;
         private TextBox logTextBox;
         private TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel reportPanel;
+        private Button button1;
     }
 }

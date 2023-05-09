@@ -1,4 +1,6 @@
-﻿using ExcelDataReader;
+﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml;
+using ExcelDataReader;
 using ExcelDataReader.Exceptions;
 using Microsoft.VisualBasic;
 using ReadFromExcelSB.DTO;
@@ -8,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace ReadFromExcelSB.Managers
 {
@@ -15,14 +18,12 @@ namespace ReadFromExcelSB.Managers
     {
 
         List<DcDto> dcList = new List<DcDto>();
+        ReportByLineMenManager reportByLineMenManager = new ReportByLineMenManager();
 
         public string ProcessData(string filePath)
         {
             using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
             {
-                // Auto-detect format, supports:
-                //  - Binary Excel files (2.0-2003 format; *.xls)
-                //  - OpenXml Excel files (2007 format; *.xlsx, *.xlsb)
                 using (IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream))
                 {
 
@@ -77,17 +78,49 @@ namespace ReadFromExcelSB.Managers
 
                     ParseDataTable(allRows);
 
-                    Console.WriteLine(result.Tables.Count);
-
-
-                    ReportByLineMenManager reportByLineMenManager = new ReportByLineMenManager();
-
                    return reportByLineMenManager.GetReport(dcList);
-
-
-
                 }
             }
+        }
+
+        public void CreateExcelFile()
+        {
+            CreateSpreadsheetWorkbook(@"C:\source\Eswar\temp\Sheet2.xlsx");
+        }
+
+        public static void CreateSpreadsheetWorkbook(string filepath)
+        {
+            // Create a spreadsheet document by supplying the filepath.
+            // By default, AutoSave = true, Editable = true, and Type = xlsx.
+            SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.
+                Create(filepath, SpreadsheetDocumentType.Workbook);
+
+            // Add a WorkbookPart to the document.
+            WorkbookPart workbookpart = spreadsheetDocument.AddWorkbookPart();
+            workbookpart.Workbook = new Workbook();
+
+            // Add a WorksheetPart to the WorkbookPart.
+            WorksheetPart worksheetPart = workbookpart.AddNewPart<WorksheetPart>();
+            worksheetPart.Worksheet = new Worksheet(new SheetData());
+
+            // Add Sheets to the Workbook.
+            Sheets sheets = spreadsheetDocument.WorkbookPart.Workbook.
+                AppendChild<Sheets>(new Sheets());
+
+            // Append a new worksheet and associate it with the workbook.
+            Sheet sheet = new Sheet()
+            {
+                Id = spreadsheetDocument.WorkbookPart.
+                GetIdOfPart(worksheetPart),
+                SheetId = 1,
+                Name = "mySheet"
+            };
+            sheets.Append(sheet);
+
+            workbookpart.Workbook.Save();
+
+            // Close the document.
+            spreadsheetDocument.Close();
         }
 
         private void ParseDataTable(System.Data.DataRowCollection allRows)
