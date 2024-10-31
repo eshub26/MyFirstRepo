@@ -11,10 +11,10 @@ namespace LoadTesting
         private DBService _dbService;
         private InMemoryDbContext _dbContext;
 
-        const int NODE1_FIVE_TEST = 1;
-        const int NODE2_FIVE_TEST = 1;
-        const int NODE3_FIVE_TEST = 1;
-        const int NODE4_FIVE_TEST = 1;
+        const int NODE1_FIVE_MULTIPLES = 1;
+        const int NODE2_FIVE_MULTIPLES = 1;
+        const int NODE3_FIVE_MULTIPLES = 1;
+        const int NODE4_FIVE_MULTIPLES = 1;
         
 
         [SetUp]
@@ -36,7 +36,7 @@ namespace LoadTesting
         [Category("Category1")]
         public async Task TestLoad_AddingEntities_Node1(
             [Values(1, 2, 3, 4, 5)] int value,
-            [Random(50, 5000, NODE1_FIVE_TEST)] int numberOfRecords)
+            [Random(50, 5000, NODE1_FIVE_MULTIPLES)] int numberOfRecords)
         {
 
             // Read a parameter passed to the test
@@ -63,11 +63,11 @@ namespace LoadTesting
 
 
 
-        //[Test]
+        [Test]
         [Category("Category2")]
         public async Task TestLoad_AddingEntities_Node2(
            [Values(1, 2, 3, 4, 5)] int value,
-           [Random(100, 8000, NODE2_FIVE_TEST)] int numberOfRecords)
+           [Random(100, 8000, NODE2_FIVE_MULTIPLES)] int numberOfRecords)
         {
 
             var tasks = Enumerable.Range(0, numberOfRecords).Select(async i =>
@@ -88,11 +88,11 @@ namespace LoadTesting
         }
 
 
-       // [Test]
+        [Test]
         [Category("Category3")]
         public async Task TestLoad_AddingEntities_Node3(
      [Values(1, 2, 3, 4, 5)] int value,
-     [Random(100, 6000, NODE3_FIVE_TEST)] int numberOfRecords)
+     [Random(100, 6000, NODE3_FIVE_MULTIPLES)] int numberOfRecords)
         {
 
             var tasks = Enumerable.Range(0, numberOfRecords).Select(async i =>
@@ -114,11 +114,11 @@ namespace LoadTesting
 
 
 
-      //  [Test]
+        [Test]
         [Category("Category4")]
         public async Task TestLoad_AddingEntities_Node4(
      [Values(1, 2, 3, 4, 5)] int value,
-     [Random(100, 7000, NODE4_FIVE_TEST)] int numberOfRecords)
+     [Random(100, 7000, NODE4_FIVE_MULTIPLES)] int numberOfRecords)
         {
 
             var tasks = Enumerable.Range(0, numberOfRecords).Select(async i =>
