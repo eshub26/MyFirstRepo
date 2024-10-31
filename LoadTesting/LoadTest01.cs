@@ -40,7 +40,7 @@ namespace LoadTesting
         {
 
             // Read a parameter passed to the test
-            string parameterValue = TestContext.Parameters.Get("ParameterName", "DefaultValue");
+            string parameterValue = Environment.GetEnvironmentVariable("USERNAME");
 
             Console.WriteLine($"Parameter Output is :  {parameterValue} ");
 
