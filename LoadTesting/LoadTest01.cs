@@ -32,8 +32,8 @@ namespace LoadTesting
         }
 
 
-        [Test]
-        [Category("Category1")]
+        [Test, Category("Category1")]
+        //[Category("Category1")]
         public async Task TestLoad_AddingEntities_Node1(
             [Values(1, 2, 3, 4, 5)] int value,
             [Random(50, 5000, NODE1_FIVE_MULTIPLES)] int numberOfRecords)
@@ -63,8 +63,8 @@ namespace LoadTesting
 
 
 
-        [Test]
-        [Category("Category2")]
+        [Test, Category("Category2")]
+        //[Category("Category2")]
         public async Task TestLoad_AddingEntities_Node2(
            [Values(1, 2, 3, 4, 5)] int value,
            [Random(100, 8000, NODE2_FIVE_MULTIPLES)] int numberOfRecords)
@@ -88,8 +88,8 @@ namespace LoadTesting
         }
 
 
-        [Test]
-        [Category("Category3")]
+        [Test, Category("Category3")]
+        //[Category("Category3")]
         public async Task TestLoad_AddingEntities_Node3(
      [Values(1, 2, 3, 4, 5)] int value,
      [Random(100, 6000, NODE3_FIVE_MULTIPLES)] int numberOfRecords)
@@ -114,8 +114,8 @@ namespace LoadTesting
 
 
 
-        [Test]
-        [Category("Category4")]
+        [Test, Category("Category4")]
+        //[Category("Category4")]
         public async Task TestLoad_AddingEntities_Node4(
      [Values(1, 2, 3, 4, 5)] int value,
      [Random(100, 7000, NODE4_FIVE_MULTIPLES)] int numberOfRecords)
