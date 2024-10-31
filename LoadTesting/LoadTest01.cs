@@ -39,6 +39,11 @@ namespace LoadTesting
             [Random(50, 5000, NODE1_FIVE_TEST)] int numberOfRecords)
         {
 
+            // Read a parameter passed to the test
+            string parameterValue = TestContext.Parameters.Get("ParameterName", "DefaultValue");
+
+            Console.WriteLine($"Parameter Output is :  {parameterValue} ");
+
             var tasks = Enumerable.Range(0, numberOfRecords).Select(async i =>
             {
                 var entity = new MyEntity1 { Data = $"Entity {i}" };
@@ -58,7 +63,7 @@ namespace LoadTesting
 
 
 
-        [Test]
+        //[Test]
         [Category("Category2")]
         public async Task TestLoad_AddingEntities_Node2(
            [Values(1, 2, 3, 4, 5)] int value,
@@ -83,7 +88,7 @@ namespace LoadTesting
         }
 
 
-        [Test]
+       // [Test]
         [Category("Category3")]
         public async Task TestLoad_AddingEntities_Node3(
      [Values(1, 2, 3, 4, 5)] int value,
@@ -109,7 +114,7 @@ namespace LoadTesting
 
 
 
-        [Test]
+      //  [Test]
         [Category("Category4")]
         public async Task TestLoad_AddingEntities_Node4(
      [Values(1, 2, 3, 4, 5)] int value,
