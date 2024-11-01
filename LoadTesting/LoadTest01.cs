@@ -11,10 +11,10 @@ namespace LoadTesting
         private DBService _dbService;
         private InMemoryDbContext _dbContext;
 
-        const int NODE1_FIVE_MULTIPLES = 10;
-        const int NODE2_FIVE_MULTIPLES = 12;
-        const int NODE3_FIVE_MULTIPLES = 20;
-        const int NODE4_FIVE_MULTIPLES = 15;
+        const int NODE1_FIVE_MULTIPLES = 125;
+        const int NODE2_FIVE_MULTIPLES = 130;
+        const int NODE3_FIVE_MULTIPLES = 115;
+        const int NODE4_FIVE_MULTIPLES = 110;
         
 
         [SetUp]
